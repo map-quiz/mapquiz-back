@@ -1,141 +1,176 @@
-# Map Quiz - Backend API
+# MapQuiz Backend API
 
-## 🚀 Description
+> 🚀 **Documentation Complète** : Consultez [DEVELOPPEMENT.md](./DEVELOPPEMENT.md) pour le guide d'installation et [DEPLOIEMENT.md](./DEPLOIEMENT.md) pour le protocole de déploiement.
 
-API backend pour l'application Map Quiz, construite avec Fastify, Prisma et Better Auth. Cette API gère l'authentification, les utilisateurs et le système d'amis.
+## 🎯 **Vue d'Ensemble**
 
-## 🛠️ Technologies
+API backend pour l'application MapQuiz, construite avec Fastify, TypeScript et Prisma. Gère l'authentification, le jeu multijoueur en temps réel, et toute la logique métier.
 
-- **Framework**: Fastify
-- **Base de données**: PostgreSQL avec Prisma ORM
-- **Authentification**: Better Auth avec Google OAuth
-- **Sécurité**: Helmet, CORS, Rate Limiting
-- **Langage**: TypeScript
+## 🛠️ **Stack Technique**
 
-## 📋 Prérequis
+- **Runtime** : Node.js 22+ avec TypeScript
+- **Framework** : Fastify (haute performance)
+- **Base de données** : PostgreSQL + Prisma ORM
+- **Authentication** : Better Auth + Google OAuth
+- **WebSockets** : Support temps réel intégré
+- **Tests** : Jest + Supertest
+- **Sécurité** : Helmet, CORS, Rate Limiting
 
-- Node.js 18+
-- PostgreSQL
-- Compte Google Cloud (pour OAuth)
+## ⚡ **Démarrage Rapide**
 
-## 🔧 Installation
-
-1. Clonez le repository
+### **Installation**
 
 ```bash
-git clone <votre-repo>
 cd backend
-```
-
-2. Installez les dépendances
-
-```
 npm install
 ```
 
-3. Configurez les variables d'environnement
+### **Configuration**
 
-```
-cp .env.example .env
-```
-
-Variables requises :
-
-```
-DATABASE_URL="postgresql://user:password@localhost:5432/mapquiz"
-BETTER_AUTH_SECRET="votre-secret-aleatoire"
-BETTER_AUTH_URL="http://localhost:5173"
-GOOGLE_CLIENT_ID="votre-google-client-id"
-GOOGLE_CLIENT_SECRET="votre-google-client-secret"
-SERVER_URL="http://localhost:3000"
+```bash
+# Copier le template de configuration
+cp env.example .env
+# Éditer .env avec vos valeurs
 ```
 
-4. Configurez la base de données
+### **Base de Données**
 
+```bash
+# Démarrer PostgreSQL (Docker)
+npm run test:docker:start
+
+# Appliquer les migrations
+npm run db:push && npm run db:generate
 ```
-npm run db:push
-npm run db:generate
-```
 
-## 🚀 Démarrage
+### **Démarrage**
 
-### Développement
-
-```
+```bash
+# Mode développement avec hot-reload
 npm run dev
+
+# Tests avec couverture
+npm run test:coverage
 ```
 
-### Production
+**🌐 Serveur disponible** : http://localhost:3000
+
+## 🏗️ **Architecture API**
+
+### **Endpoints Principaux**
+
+**Authentication**
+
+- `GET/POST /auth/*` - Gestion authentification Better Auth
+- `GET /auth/callback/google` - Callback OAuth Google
+
+**Users & Social**
+
+- `GET /api/users` - Liste des utilisateurs
+- `GET /api/friends` - Système d'amis complet
+- `POST /api/friends/add` - Ajouter un ami
+
+**Game Logic**
+
+- `POST /api/scores` - Sauvegarde des scores
+- `GET /api/scores/history` - Historique des parties
+
+**Lobbies & Multiplayer**
+
+- WebSocket `/ws` - Communication temps réel
+- Gestion complète des lobbies multijoueur
+
+**Health & Monitoring**
+
+- `GET /health` - Status API + base de données
+
+### **WebSocket Events**
+
+- `lobby:join` - Rejoindre un lobby
+- `lobby:leave` - Quitter un lobby
+- `game:progress` - Progression de partie
+- `player:status` - Status des joueurs
+
+## 🗄️ **Base de Données**
+
+**Modèles Prisma :**
+
+- `User` - Utilisateurs et authentification
+- `Session` - Sessions utilisateur
+- `Account` - Comptes OAuth
+- `Friendship` - Relations d'amitié
+- `GameScore` - Scores et historique
+- `Lobby` - Lobbies multijoueur
+- `LobbyPlayer` - Joueurs dans les lobbies
+
+## 📋 **Scripts de Développement**
+
+```bash
+# Développement
+npm run dev                 # Mode développement avec watch
+npm run build:check         # Vérification TypeScript
+
+# Base de données
+npm run db:generate         # Générer client Prisma
+npm run db:push            # Synchroniser schéma
+npm run db:studio          # Interface graphique
+
+# Tests
+npm run test               # Suite complète
+npm run test:unit          # Tests unitaires
+npm run test:integration   # Tests d'intégration
+npm run test:performance   # Tests de performance
+npm run test:coverage      # Avec couverture
+
+# Docker (tests)
+npm run test:docker:start  # Démarrer PostgreSQL
+npm run test:docker:stop   # Arrêter PostgreSQL
+
+# Production
+npm run build              # Build optimisé
+npm start                 # Démarrage production
+```
+
+## 🔒 **Sécurité & Performance**
+
+**Sécurité :**
+
+- Rate limiting adaptatif
+- Headers sécurisés (Helmet)
+- CORS configuré
+- Validation des données (Zod)
+
+**Performance :**
+
+- Fastify haute performance
+- Connexions WebSocket optimisées
+- Requêtes DB optimisées avec Prisma
+- Logs structurés
+
+## 🧪 **Tests**
+
+**Couverture :** > 80% requise  
+**Types :** Unitaires, intégration, performance  
+**Environnement :** PostgreSQL Docker isolé  
+**CI/CD :** Tests automatiques sur chaque PR
+
+## 📁 **Structure du Code**
 
 ```
-npm run build
-npm start
+src/
+├── controllers/        # Logique des routes
+├── services/          # Logique métier
+├── models/           # Modèles Prisma
+├── routes/           # Définition des routes
+├── lib/              # Utilitaires
+├── middleware/       # Middlewares Fastify
+├── websocket/        # Gestion WebSocket
+└── types/           # Types TypeScript
 ```
 
-## 📚 API Endpoints
+**🔗 Liens utiles :**
 
-### Authentification
-
-- GET/POST /auth/\* - Gestion de l'authentification Better Auth
-- GET /auth/callback/google - Callback OAuth Google
-
-### Utilisateurs
-
-- GET /users - Liste des utilisateurs
-- GET /users/:id - Profil utilisateur
-
-### Amis
-
-- GET /friends - Liste des amis
-- POST /friends/add - Ajouter un ami
-- DELETE /friends/remove - Supprimer un ami
-- GET /friends/requests - Demandes d'amis
-
-### Santé
-
-- GET /health - Vérification de l'état de l'API
-
-## 🗄️ Base de données
-
-Le schéma Prisma inclut :
-
-- User : Utilisateurs avec authentification
-- Session : Sessions utilisateur
-- Account : Comptes OAuth
-- Friendship : Relations d'amitié
-
-## 🔒 Sécurité
-
-- Helmet : Protection des headers HTTP
-- CORS : Configuration cross-origin
-- Rate Limiting : 100 requêtes/minute
-- Better Auth : Authentification sécurisée
-
-## 📝 Scripts disponibles
-
-- npm run dev - Démarrage en mode développement
-- npm run build - Build de production
-- npm start - Démarrage en production
-- npm run db:push - Synchroniser le schéma DB
-- npm run db:migrate - Créer une migration
-- npm run db:studio - Interface Prisma Studio
-
-## 🔧 Configuration
-
-### Fastify
-
-- Configuration dans src/server.ts
-- Plugins : CORS, Helmet, Rate Limiting
-- Routes modulaires dans /routes
-
-### Prisma
-
-- Schéma dans prisma/schema.prisma
-- Migrations dans prisma/migrations/
-- Client généré automatiquement
-
-### Better Auth
-
-- Configuration OAuth Google
-- Sessions sécurisées
-- Middleware d'authentification
+- [Guide développement complet](./DEVELOPPEMENT.md)
+- [Protocole de déploiement](./DEPLOIEMENT.md)
+- [Schema Prisma](./prisma/schema.prisma)
+- [Frontend MapQuiz](https://github.com/map-quiz/mapquiz-front)

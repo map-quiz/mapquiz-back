@@ -1,6 +1,6 @@
 {
   "name": "mapquiz-backend",
-  "version": "1.0.0",
+  "version": "0.0.9",
   "description": "Backend optimisé pour MapQuiz",
   "main": "dist/server.js",
   "type": "module",
@@ -17,10 +17,7 @@
     "test:coverage": "./scripts/test-setup.sh --coverage",
     "test:unit": "./scripts/test-setup.sh --unit",
     "test:integration": "./scripts/test-setup.sh --integration",
-    "test:e2e": "./scripts/test-setup.sh --e2e",
     "test:performance": "./scripts/test-setup.sh --performance",
-    "test:ci": "./scripts/test-setup.sh --ci",
-    "test:debug": "./scripts/test-setup.sh --debug",
     "test:docker:start": "docker compose -f docker-compose.test.yml up -d",
     "test:docker:stop": "docker compose -f docker-compose.test.yml down",
     "lint": "eslint src/**/*.ts",

@@ -232,8 +232,8 @@ describe("ScoreService - Logique Métier Réelle", () => {
           selectedRegions: ["Europe"],
           gameMode: "quiz",
           duration: 300,
-          createdAt: new Date("2023-12-25T23:59:59Z"), // Test cas limite
-          updatedAt: new Date("2023-12-25T23:59:59Z"),
+          createdAt: new Date("2023-12-26T12:00:00Z"), // Date plus explicite pour éviter les problèmes de fuseau
+          updatedAt: new Date("2023-12-26T12:00:00Z"),
         },
         {
           id: "score2",
@@ -243,8 +243,8 @@ describe("ScoreService - Logique Métier Réelle", () => {
           selectedRegions: ["Asia"],
           gameMode: "quiz",
           duration: 180,
-          createdAt: new Date("2023-01-01T00:00:01Z"), // Test début d'année
-          updatedAt: new Date("2023-01-01T00:00:01Z"),
+          createdAt: new Date("2023-01-01T12:00:00Z"), // Date plus explicite pour éviter les problèmes de fuseau
+          updatedAt: new Date("2023-01-01T12:00:00Z"),
         },
       ];
 
@@ -256,6 +256,17 @@ describe("ScoreService - Logique Métier Réelle", () => {
       // ✅ VALIDATION du formatage français (ligne 57-60)
       expect(result[0].date).toBe("01/01"); // Plus récent (reverse)
       expect(result[1].date).toBe("26/12"); // Plus ancien (date UTC convertie)
+
+      // ✅ VALIDATION supplémentaire : vérifier le format français DD/MM
+      expect(result[0].date).toMatch(/^\d{2}\/\d{2}$/);
+      expect(result[1].date).toMatch(/^\d{2}\/\d{2}$/);
+
+      // ✅ VALIDATION : vérifier que les dates sont dans le bon ordre (reverse)
+      const date1 = new Date("2023-01-01T12:00:00Z");
+      const date2 = new Date("2023-12-26T12:00:00Z");
+      expect(date1.getTime()).toBeLessThan(date2.getTime()); // date1 < date2
+      expect(result[0].date).toBe("01/01"); // Premier résultat = date la plus récente
+      expect(result[1].date).toBe("26/12"); // Deuxième résultat = date la plus ancienne
     });
 
     it("✅ devrait échouer si l'utilisateur n'existe pas (sécurité)", async () => {

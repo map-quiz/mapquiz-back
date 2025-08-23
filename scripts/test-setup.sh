@@ -11,10 +11,6 @@ TEST_TYPE="all"
 
 while [[ $# -gt 0 ]]; do
   case $1 in
-    --ci)
-      JEST_ARGS="$JEST_ARGS --ci --coverage --watchAll=false"
-      shift
-      ;;
     --watch)
       JEST_ARGS="$JEST_ARGS --watch"
       WATCH_MODE=true
@@ -34,11 +30,6 @@ while [[ $# -gt 0 ]]; do
       JEST_ARGS="$JEST_ARGS --testPathPatterns=integration"
       shift
       ;;
-    --e2e)
-      TEST_TYPE="e2e"
-      JEST_ARGS="$JEST_ARGS --testPathPatterns=e2e"
-      shift
-      ;;
     --performance)
       TEST_TYPE="performance"
       JEST_ARGS="$JEST_ARGS --testPathPatterns=performance"
@@ -50,7 +41,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     *)
       echo "Argument inconnu: $1"
-      echo "Usage: $0 [--ci] [--watch] [--coverage] [--unit] [--integration] [--e2e] [--performance] [--debug]"
+      echo "Usage: $0 [--watch] [--coverage] [--unit] [--integration] [--performance] [--debug]"
       exit 1
       ;;
   esac
