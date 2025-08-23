@@ -40,39 +40,9 @@ async function setupPlugins() {
 
   // Configuration CORS
   await fastify.register(cors, {
-    origin: (origin, cb) => {
-      // En développement, accepter localhost
-      if (process.env.NODE_ENV === "development") {
-        if (
-          !origin ||
-          origin.includes("localhost") ||
-          origin.includes("127.0.0.1")
-        ) {
-          return cb(null, true);
-        }
-      }
-
-      // En production, vérifier les origines autorisées
-      const allowedOrigins = [
-        process.env.BETTER_AUTH_URL,
-        process.env.SERVER_URL,
-      ].filter(Boolean);
-
-      if (origin && allowedOrigins.includes(origin)) {
-        return cb(null, true);
-      }
-
-      return cb(new Error("CORS not allowed"), false);
-    },
+    origin: true,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "X-Requested-With",
-      "Cookie",
-    ],
-    exposedHeaders: ["Set-Cookie"],
   });
 
   // Limitation de débit - Configuration différente selon l'environnement
