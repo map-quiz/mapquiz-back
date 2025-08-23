@@ -62,7 +62,7 @@ describe("GitHubService - Logique Métier Réelle", () => {
 
       // 1. Vérifier l'appel à l'API GitHub
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://api.github.com/repos/your-github-username/your-repo-name/issues",
+        "https://api.github.com/repos/map-quiz/mapquiz-back/issues",
         {
           method: "POST",
           headers: {
@@ -316,7 +316,7 @@ describe("GitHubService - Logique Métier Réelle", () => {
 
       // VALIDATION DES VALEURS PAR DÉFAUT
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://api.github.com/repos/your-github-username/your-repo-name/issues",
+        "https://api.github.com/repos/map-quiz/mapquiz-back/issues",
         expect.any(Object)
       );
     });

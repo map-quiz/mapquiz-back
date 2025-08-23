@@ -57,6 +57,11 @@ process.env.SERVER_URL = "http://localhost:3000";
 process.env.GOOGLE_CLIENT_ID = "test-client-id";
 process.env.GOOGLE_CLIENT_SECRET = "test-client-secret";
 
+// Configuration GitHub pour les tests
+process.env.GITHUB_REPO_OWNER = "map-quiz";
+process.env.GITHUB_REPO_NAME = "mapquiz-back";
+process.env.GITHUB_TOKEN = "test-token-123";
+
 // Configuration des timeouts pour les tests
 jest.setTimeout(30000); // 30 secondes par test
 
